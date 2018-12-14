@@ -1,22 +1,14 @@
-import { h } from '../ionic.js';
+import { h, proxyComponentConstructor } from './ionic.js';
 
 
 export class IonButton {
+
+  ionChange = createEvent({name: 'ionChange'})
 
   render() {
     return h('button', null);
   }
 
-  static get properties() {
-    return {
-      'text': {
-        reflectToAttr: true
-      }
-    }
-  }
-
-  static get is() {
-    return 'ion-button'
-  }
-
 }
+
+proxyEvent(IonButton, ['ion-button', [0, 43, 34]])
