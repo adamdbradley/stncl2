@@ -95,8 +95,6 @@ async function connectedCallback(elm, cmpMeta) {
     LazyComponent.proxied = true;
   }
 
-  styles.set(elm.tagName + LazyComponent.styleMode, LazyComponent.style);
-
   elmData.instance = new module.IonCheckbox(elm);
 
   render(elmData.instance)
