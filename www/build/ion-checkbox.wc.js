@@ -31,17 +31,6 @@ export class IonCheckbox extends HTMLElement {
     render(this);
   }
 
-  get checkbox() {
-    return ref.get(this).instanceValues.checked;
-  }
-
-  set checkbox(newValue) {
-    const refItem = ref.get(this);
-    if (setValue('checked', refItem.instanceValues, newValue)) {
-      render(this);
-    }
-  }
-
   render() {
     return h('div', null);
   }
