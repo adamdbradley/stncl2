@@ -55,11 +55,10 @@ export function proxyLazyComponent(LazyCmp, cmpMeta) {
 }
 
 
-export function registerLazyInstance(lazyInstance, hostElm) {
-  console.log('registerLazyInstance', lazyInstance, hostElm)
-  const meta = ref.get(hostElm);
-  meta.instance = lazyInstance;
-  ref.set(instance, meta);
+export function registerLazyInstance(lazyInstance, elmData) {
+  console.log('registerLazyInstance', lazyInstance, elmData)
+  elmData.instance = lazyInstance;
+  ref.set(lazyInstance, elmData);
 }
 
 const ref = new WeakMap();
@@ -97,7 +96,7 @@ async function connectedCallback(elm, cmpMeta) {
     LazyComponent.proxied = true;
   }
 
-  elmData.instance = new module.IonCheckbox(elm);
+  new module.IonCheckbox(elmData);
 
   render(elmData.instance)
 }

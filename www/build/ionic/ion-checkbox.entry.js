@@ -3,8 +3,8 @@ import { h, registerLazyInstance, registerStyle } from '../ionic.mjs.js';
 
 export class IonCheckbox {
 
-  constructor(hostElm) {
-    registerLazyInstance(this, hostElm);
+  constructor(elmData) {
+    registerLazyInstance(this, elmData);
   }
 
   render() {
