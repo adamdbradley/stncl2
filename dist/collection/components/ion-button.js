@@ -9,8 +9,32 @@ export class IonButton {
 
   static get properties() {
     return {
-      'text': {
-        reflectToAttr: true
+
+      /** This is the checked property */
+      checked: {
+        type: 'boolean',
+        attr: 'checked',
+        reflectToAttr: true,
+        mutable: true
+      },
+
+      /** jsdocs */
+      multiWord: {
+        type: 'string',
+        attr: 'multi-word'
+      },
+
+      /** jsdocs */
+      text: {
+        type: 'string',
+        state: true
+      },
+
+      /** jsdocs */
+      something: {
+        type: 'unknown',
+        complexType: 'SomeClass[]',
+        state: true
       }
     }
   }
