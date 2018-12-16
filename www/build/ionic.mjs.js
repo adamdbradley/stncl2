@@ -57,7 +57,9 @@ export function proxyLazyComponent(LazyCmp, cmpMeta) {
 
 export function registerLazyInstance(lazyInstance, hostElm) {
   console.log('registerLazyInstance', lazyInstance, hostElm)
-  ref.get(hostElm).instance = lazyInstance;
+  const meta = ref.get(hostElm);
+  meta.instance = lazyInstance;
+  ref.set(instance, meta);
 }
 
 const ref = new WeakMap();

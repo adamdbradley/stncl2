@@ -19,16 +19,20 @@ function render(instance) {
   instance.render();
 }
 
+async function connectedCallback(elm) {
+  console.log('connected', elm.tagName);
+  const elmData = {
+    instanceValues: new Map()
+  };
+  ref.set(elm, elmData);
+
+  render(elm);
+}
+
 export class IonCheckbox extends HTMLElement {
 
-  async connectedCallback() {
-    console.log('connected', this.tagName);
-    const elmData = {
-      instanceValues: new Map()
-    };
-    ref.set(this, elmData);
-
-    render(this);
+  connectedCallback() {
+    connectedCallback(this);
   }
 
   render() {

@@ -19,16 +19,32 @@ function render(instance) {
   instance.render();
 }
 
+async function connectedCallback(elm) {
+  console.log('connected', elm.tagName);
+  const elmData = {
+    instanceValues: new Map()
+  };
+  ref.set(elm, elmData);
+
+  render(elm);
+}
+
+export class IonButton extends HTMLElement {
+
+  connectedCallback() {
+    connectedCallback(this);
+  }
+
+  render() {
+    return h('div', null);
+  }
+
+}
+
 export class IonCheckbox extends HTMLElement {
 
-  async connectedCallback() {
-    console.log('connected', this.tagName);
-    const elmData = {
-      instanceValues: new Map()
-    };
-    ref.set(this, elmData);
-
-    render(this);
+  connectedCallback() {
+    connectedCallback(this);
   }
 
   render() {
@@ -68,5 +84,10 @@ export function proxyComponent(Cstr, cmpMeta) {
   });
 }
 
-proxyComponent(IonCheckbox, [['checked']])
-customElements.define('ion-checkbox', IonCheckbox)
+[
+  ['ion-box', IonButton, ['type']],
+  ['ion-checkbox', IonCheckbox, ['checkbox']]
+].forEach(cmp => {
+  proxyComponent(cmp[1], cmp[2])
+  customElements.define(cmp[0], cmp[1])
+});
