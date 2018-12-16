@@ -1,30 +1,17 @@
 
-function proxyHostElement(HostCstr, cmpMeta) {
-  console.log('proxyHostElement', cmpMeta[0])
-
-  cmpMeta[1].forEach(member => {
-    proxyMember(HostCstr, member[0]);
-  });
-
-  customElements.define(cmpMeta[0], HostCstr);
-}
-
-
-function setValue(memberName, instanceValues, newValue) {
-  const oldValue = instanceValues.get(memberName);
-  if (oldValue !== newValue) {
-    console.log('value changed from', oldValue, 'to', newValue);
-
-    instanceValues.set(memberName, newValue)
-    return true;
-  }
-  return false;
-}
-
 
 function render(instance) {
   console.log('render')
   instance.render();
+}
+
+
+export function proxyMembers(Cstr, cmpMeta) {
+  console.log('proxyMembers', Cstr, cmpMeta);
+
+  cmpMeta[1].forEach(member => {
+    proxyMember(Cstr, member[0]);
+  });
 }
 
 
@@ -46,12 +33,16 @@ function proxyMember(Cstr, memberName) {
   })
 }
 
-export function proxyLazyComponent(LazyCmp, cmpMeta) {
-  console.log('proxyLazyComponent', LazyCmp, cmpMeta);
 
-  cmpMeta[1].forEach(member => {
-    proxyMember(LazyCmp, member[0]);
-  });
+function setValue(memberName, instanceValues, newValue) {
+  const oldValue = instanceValues.get(memberName);
+  if (oldValue !== newValue) {
+    console.log('value changed from', oldValue, 'to', newValue);
+
+    instanceValues.set(memberName, newValue)
+    return true;
+  }
+  return false;
 }
 
 
@@ -75,7 +66,8 @@ function bootstrapLazyComponents(cmpData) {
       }
 
     }
-    proxyHostElement(LazyHost, cmpMeta);
+    proxyMembers(LazyHost, cmpMeta);
+    customElements.define(cmpMeta[0], LazyHost);
   });
 }
 
@@ -92,7 +84,7 @@ async function connectedCallback(elm, cmpMeta) {
   const LazyComponent = module.IonCheckbox;
 
   if (!LazyComponent.proxied) {
-    proxyLazyComponent(LazyComponent, cmpMeta);
+    proxyMembers(LazyComponent, cmpMeta);
     LazyComponent.proxied = true;
   }
 
