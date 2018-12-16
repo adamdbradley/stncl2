@@ -90,7 +90,10 @@ async function connectedCallback(elm, cmpMeta) {
   const module = await import('./ionic/ion-checkbox.entry.js');
   const LazyComponent = module.IonCheckbox;
 
-  proxyLazyComponent(LazyComponent, cmpMeta);
+  if (!module.IonCheckbox.proxied) {
+    proxyLazyComponent(LazyComponent, cmpMeta);
+    module.IonCheckbox.proxied = true;
+  }
 
   styles.set(elm.tagName + LazyComponent.styleMode, LazyComponent.style);
 
@@ -102,6 +105,11 @@ async function connectedCallback(elm, cmpMeta) {
 
 bootstrapLazyComponents([['ion-checkbox', [['checked']]]]);
 
+
+export function registerStyle(styleId, style) {
+  console.log('registerStyle', styleId, style);
+  styles.set(styleId, style);
+}
 
 
 export function h() {

@@ -1,4 +1,4 @@
-import { h, registerLazyInstance, proxyLazyComponent } from '../ionic.mjs.js';
+import { h, registerLazyInstance, registerStyle } from '../ionic.mjs.js';
 
 
 export class IonCheckbox {
@@ -11,12 +11,6 @@ export class IonCheckbox {
     return h('button', null);
   }
 
-  static get style() {
-    return `div { color: blue }`
-  }
-
-  static get styleMode() {
-    return `ios`
-  }
-
 }
+
+registerStyle('ion-checkbox.ios', 'div { color: blue }')
