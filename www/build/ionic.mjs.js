@@ -29,24 +29,12 @@ function proxyMember(Cstr, memberName) {
 
   Object.defineProperty(Cstr.prototype, memberName, {
     get() {
-      return getValue(this, memberName);
+      return refMap.get(this).instanceValues.get(memberName);
     },
     set(newValue) {
       setValue(this, memberName, newValue);
     }
   })
-}
-
-function scheduleUpdate(elmData) {
-  // queue
-  requestAnimationFrame(() => {
-    render(elmData.instance);
-  });
-}
-
-function render(instance) {
-  console.log('render')
-  instance.render();
 }
 
 function setValue(ref, memberName, newValue) {
@@ -63,8 +51,17 @@ function setValue(ref, memberName, newValue) {
   return false;
 }
 
-export function getValue(ref, memberName) {
-  return refMap.get(ref).instanceValues.get(memberName);
+
+function scheduleUpdate(elmData) {
+  // queue
+  requestAnimationFrame(() => {
+    render(elmData.instance);
+  });
+}
+
+function render(instance) {
+  console.log('render')
+  instance.render();
 }
 
 export function registerLazyInstance(lazyInstance, elmData) {
