@@ -1,7 +1,7 @@
 
 
 // treeshakable
-export function e(ref, name, options) {
+export function createEvent(ref, name, options) {
   const elm = refMap.get(ref).elm;
   return {
     emit(detail) {
@@ -11,7 +11,7 @@ export function e(ref, name, options) {
 }
 
 // treeshakable
-export function el(ref) {
+export function getElement(ref) {
   return refMap.get(ref).elm;
 }
 
@@ -67,7 +67,7 @@ export function getValue(ref, memberName) {
   return refMap.get(ref).instanceValues.get(memberName);
 }
 
-export function c(lazyInstance, elmData) {
+export function registerLazyInstance(lazyInstance, elmData) {
   console.log('registerLazyInstance', lazyInstance, elmData)
   elmData.instance = lazyInstance;
   refMap.set(lazyInstance, elmData);
@@ -121,7 +121,7 @@ async function connectedCallback(elm, cmpMeta) {
 bootstrapLazyComponents([['ion-checkbox', [['checked']]]]);
 
 
-export function s(styleId, style) {
+export function registerStyle(styleId, style) {
   console.log('registerStyle', styleId, style);
   styles.set(styleId, style);
 }
