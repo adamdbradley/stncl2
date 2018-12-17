@@ -5,8 +5,13 @@ import { Component, Prop } from '@stencil/core';
 })
 export class IonButton {
 
+  @Element() el: HTMLElement;
   @Prop() text: string;
-  @Event() text: string;
+  @Event({
+    bubbles: false,
+    cancellable: false,
+    composite: false
+  }) event: EventEmitter;
 
   render() {
     <button>{this.text}</button>
