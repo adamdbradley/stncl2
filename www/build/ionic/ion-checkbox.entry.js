@@ -1,27 +1,28 @@
-import { h, registerLazyInstance, registerStyle, createEvent, getElement } from '../ionic.mjs.js';
+import { h, c, s, e, el } from '../ionic.mjs.js';
 
 
 export class IonCheckbox {
 
-  // @Element() el
-  get el() {
-    return getElement(this);
+  constructor(elmData) {
+    c(this, elmData);
+
+    // @Event() el
+    this.ionChange = e(this, 'ionChange', {
+      bubbles: false, // optional, only pass when it's false
+      composed: false, // optional, only pass when it's false
+      cancelable: false, // optional, only pass when it's false
+    });
   }
 
-  // @Event() el
-  ionChange = createEvent(this, 'ionChange', {
-    bubbles: false, // optional, only pass when it's false
-    composed: false, // optional, only pass when it's false
-    cancelable: false, // optional, only pass when it's false
-  });
-
-  constructor(elmData) {
-    registerLazyInstance(this, elmData);
+  // @Element() el
+  get el() {
+    return el(this);
   }
 
   render() {
+    this.el.textContent = 'ion-checkbox';
     return h('button', null);
   }
 }
 
-registerStyle('ion-checkbox.ios', 'div { color: blue }')
+s('ion-checkbox.ios', 'div { color: blue }')

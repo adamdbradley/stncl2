@@ -1,7 +1,7 @@
 
 
 // treeshakable
-export function createEvent(ref, name, options) {
+export function e(ref, name, options) {
   const elm = refMap.get(ref).elm;
   return {
     emit(detail) {
@@ -11,7 +11,7 @@ export function createEvent(ref, name, options) {
 }
 
 // treeshakable
-export function getElement(ref) {
+export function el(ref) {
   return refMap.get(ref).elm;
 }
 
@@ -37,10 +37,10 @@ function proxyMember(Cstr, memberName) {
   })
 }
 
-function scheduleUpdate(meta) {
+function scheduleUpdate(elmData) {
   // queue
   requestAnimationFrame(() => {
-    render(meta.instance);
+    render(elmData.instance);
   });
 }
 
@@ -50,14 +50,14 @@ function render(instance) {
 }
 
 function setValue(ref, memberName, newValue) {
-  const meta = refMap.get(ref);
-  const instanceValues = meta.instanceValues;
+  const elmData = refMap.get(ref);
+  const instanceValues = elmData.instanceValues;
   const oldValue = instanceValues.get(memberName);
   if (oldValue !== newValue) {
     console.log('value changed from', oldValue, 'to', newValue);
     instanceValues.set(memberName, newValue);
 
-    scheduleUpdate(meta);
+    scheduleUpdate(elmData);
     return true;
   }
   return false;
@@ -67,7 +67,7 @@ export function getValue(ref, memberName) {
   return refMap.get(ref).instanceValues.get(memberName);
 }
 
-export function registerLazyInstance(lazyInstance, elmData) {
+export function c(lazyInstance, elmData) {
   console.log('registerLazyInstance', lazyInstance, elmData)
   elmData.instance = lazyInstance;
   refMap.set(lazyInstance, elmData);
@@ -76,15 +76,15 @@ export function registerLazyInstance(lazyInstance, elmData) {
 const refMap = new WeakMap();
 const styles = new Map();
 
-function bootstrapLazyComponents(cmpData) {
+function bootstrapLazyComponents(cmpMetas) {
   console.log('bootstrapLazyComponents')
-  cmpData.forEach(cmpMeta => {
+  cmpMetas.forEach(cmpMeta => {
 
     class LazyHost extends HTMLElement {
 
       constructor() {
-        // create meta here, because connectedCallback can be called many times
-        refMap.set(elm, {
+        super();
+        refMap.set(this, {
           instanceValues: new Map(),
           instance: null,
           elm: this
@@ -104,7 +104,7 @@ function bootstrapLazyComponents(cmpData) {
 async function connectedCallback(elm, cmpMeta) {
   console.log('connected', elm.tagName);
 
-  const meta = refMap.get(elm);
+  const elmData = refMap.get(elm);
   const module = await import('./ionic/ion-checkbox.entry.js');
   const LazyComponent = module.IonCheckbox;
 
@@ -113,15 +113,15 @@ async function connectedCallback(elm, cmpMeta) {
     LazyComponent.proxied = true;
   }
 
-  new LazyComponent(meta);
-  scheduleUpdate(meta);
+  new LazyComponent(elmData);
+  scheduleUpdate(elmData);
 }
 
 
 bootstrapLazyComponents([['ion-checkbox', [['checked']]]]);
 
 
-export function registerStyle(styleId, style) {
+export function s(styleId, style) {
   console.log('registerStyle', styleId, style);
   styles.set(styleId, style);
 }
