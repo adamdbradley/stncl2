@@ -2,4 +2,20 @@
 <script src="/build/ionic.mjs.js" type="module"></script>
 <script src="/build/ionic.js" nomodule></script>
 
+<button onclick="add()">Create</button>
+<button onclick="remove()">Remove</button>
+
 <ion-checkbox></ion-checkbox>
+
+
+<script>
+
+  function remove() {
+    document.body.querySelectorAll('ion-checkbox').forEach(e => e.remove());
+  }
+  function add() {
+    for(let i = 0; i < 5; i++) {
+      document.body.appendChild(document.createElement('ion-checkbox'));
+    }
+  }
+</script>
